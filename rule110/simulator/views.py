@@ -1,41 +1,60 @@
+
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 import json
+from django.views.decorators.csrf import csrf_exempt
 
-def decimal_to_binary_list(n):
-    return [int(x) for x in f"{n:08b}"]
 
-def generate_generations(initial, ruleset, steps):
-    generations = []
-    current = initial[:]
-    generations.append(current)
+def rule_step(row, rule_number):
+    new_row = []
+    for i in range(len(row)):
+        left = row[i - 1] if i > 0 else 0 
+        center = row[i]
+        right = row[i + 1] if i < len(row) - 1 else 0
+        triplet = (left << 2) | (center << 1) | right #OR left*4 center*2 right and they will +
+        # new_row.append(ruleset[triplet])
+        new_cell= 1 if triplet in [1,2,3,5,6,7] else 0 #rule110, 4 and 0 is 0
+        new_row.append(new_cell)
+    return new_row
 
-    for _ in range(steps):
-        nextgen = []
-        for i in range(len(current)):
-            left = current[(i - 1) % len(current)]
-            center = current[i]
-            right = current[(i + 1) % len(current)]
-            index = 7 - (left * 4 + center * 2 + right)
-            nextgen.append(ruleset[index])
-        generations.append(nextgen)
-        current = nextgen
-    return generations
 
-@csrf_exempt
+@csrf_exempt # have no idea 
 def rule110_api(request):
-    if request.method == 'POST':
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST allowed'}, status=405)
+
+    try:
+        import json
         data = json.loads(request.body)
         initial_str = data.get('initial')
-        rule_number = int(data.get('rule', 110))
-        steps = int(data.get('steps', 20))
+        rule = int(data.get('rule'))
+        steps = int(data.get('steps'))
 
-        initial = [int(c) for c in initial_str.strip()]
-        ruleset = decimal_to_binary_list(rule_number)
-        result = generate_generations(initial, ruleset, steps)
-        return JsonResponse({'generations': result})
-    return JsonResponse({'error': 'Only POST allowed'}, status=405)
+        current = [int(c) for c in initial_str]
+        generations = [current]
 
+        for _ in range(steps):
+            current = rule_step(current, rule)
+            generations.append(current)
 
+        return JsonResponse({'generations': generations})
 
-# Create your views here.
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    
+
+#for 256 rules? 
+'''
+from django.http import JsonResponse
+import json
+
+def rule_step(row, rule_number):
+    ruleset = [(rule_number >> i) & 1 for i in range(7, -1, -1)]  # تبدیل به دودویی
+    new_row = []
+    for i in range(len(row)):
+        left = row[i - 1] if i > 0 else 0
+        center = row[i]
+        right = row[i + 1] if i < len(row) - 1 else 0
+        triplet = (left << 2) | (center << 1) | right
+        new_row.append(ruleset[triplet])
+    return new_row
+'''

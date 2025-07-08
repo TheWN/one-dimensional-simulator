@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .cell { width: 12px; height: 12px; display: inline-block; }
+        .on { background: black; }
+        .off { background: white; }
+    </style>
+</head>
+<body>
+    {% for row in generations %}
+        <div>
+            {% for cell in row %}
+                <span class="cell {% if cell %}on{% else %}off{% endif %}"></span>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>

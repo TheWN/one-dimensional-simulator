@@ -37,5 +37,18 @@ def rule110_api(request):
     return JsonResponse({'error': 'Only POST allowed'}, status=405)
 
 
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def rule110_view(request):
+    rule_number = 110
+    ruleset = decimal_to_binary_list(rule_number)
+    length = 41
+    steps = 30
+    initial = [0] * (length // 2) + [1] + [0] * (length // 2)
+    generations = generate_generations(initial, ruleset, steps)
+    return render(request, 'rule110.html', {'generations': generations})
+
+
 
 # Create your views here.

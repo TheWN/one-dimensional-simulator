@@ -22,6 +22,7 @@ def generate_generations(initial, ruleset, steps):
         current = nextgen
     return generations
 
+#این درسته
 @csrf_exempt
 def rule110_api(request):
     if request.method == 'POST':
@@ -40,15 +41,10 @@ def rule110_api(request):
 from django.shortcuts import render
 from django.http import HttpResponse
 
+@csrf_exempt
+# این تابع فقط HTML خام رو رندر می‌کنه
 def rule110_view(request):
-    rule_number = 110
-    ruleset = decimal_to_binary_list(rule_number)
-    length = 41
-    steps = 30
-    initial = [0] * (length // 2) + [1] + [0] * (length // 2)
-    generations = generate_generations(initial, ruleset, steps)
-    return render(request, 'rule110.html', {'generations': generations})
-
+    return render(request, 'rule110.html')
 
 
 # Create your views here.

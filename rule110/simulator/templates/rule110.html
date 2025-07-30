@@ -1,19 +1,121 @@
 <!DOCTYPE html>
+<html lang="en">
 <html>
-<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Rule 110 simulation</title>       
+        <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico">  -->
+    </head>
+    <!-- css -->
     <style>
-        .cell { width: 12px; height: 12px; display: inline-block; }
-        .on { background: black; }
-        .off { background: white; }
+        html, body{
+            
+            background-color: #FAF9EE;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: sans-serif;
+         
+        }
+
+        .grid {
+            display: grid; /* دیو به صورت شبکه ای */
+            justify-content: start;
+            align-content: start;
+            gap: 1px; /*distance between cell*/
+            background-color: #dccfc0;
+            flex-grow: 1; /*kesh miad*/
+            overflow: hidden;
+        }
+
+        .cell { /*each cell*/
+      width: 20px; 
+      height: 20px;
+      background-color: #faf9ee;
+      border: 1px solid #00000049;
+      cursor: pointer; /* ba neshangar mouse tagheer mikonad*/
+        }
+
+
+        .active {
+      background-color: #000000; 
+    }
+
+    .sidebar {
+      width: 30%;
+      background-color: #A2AF9B;
+      padding: 20px;
+      border-left: 3px solid #a2af9b9f;
+
+
+    }
+
+  
+
+        h2   {color: #586053;}
+        p1    {color: #586053;}
+        
     </style>
-</head>
-<body>
-    {% for row in generations %}
-        <div>
-            {% for cell in row %}
-                <span class="cell {% if cell %}on{% else %}off{% endif %}"></span>
-            {% endfor %}
+    <!-- css -->
+    <body>
+        <div class="grid" id="grid"></div> 
+        <!-- تا در جی اس بهش دسترسی داشته باشیم 
+         با هنصر div 
+         در جاوا اسکریپت صد ها div میسازیم
+         -->
+
+
+         <div class="sidebar">
+          <h2 style="text-align:center;"> cellular automata simulator </h2>
         </div>
-    {% endfor %}
-</body>
+    
+
+        <script>
+            
+  const grid = document.getElementById("grid");
+  const cellSize = 20;
+  const cellGap = 1;
+
+  function createGrid() {
+    // پاک کردن سلول‌های قبلی
+    grid.innerHTML = "";
+
+    // اندازه جدید صفحه
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // محاسبه سطر و ستون
+    const cols = Math.floor(screenWidth / (cellSize + cellGap));
+    const rows = Math.floor(screenHeight / (cellSize + cellGap));
+
+    // تنظیم گرید با اندازه جدید
+    grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+    grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
+
+    // ساخت سلول‌ها
+    for (let i = 0; i < rows * cols; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.addEventListener("click", () => {
+        cell.classList.toggle("active");
+      });
+      grid.appendChild(cell);
+    }
+  }
+
+  // اجرای اولیه
+  createGrid();
+
+  // اجرای دوباره موقع resize
+  window.addEventListener("resize", createGrid);
+            
+        </script>
+
+    </body>
 </html>
+
+
+
+

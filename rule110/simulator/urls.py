@@ -11,5 +11,5 @@ from .views import rule110_view
 
 urlpatterns = [
     path('rule110/', rule110_api),
-    path('rule110s/', rule110_view, name='rule110')
+    path('rule110view/', rule110_view, name='rule110')
 ]

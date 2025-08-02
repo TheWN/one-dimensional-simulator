@@ -35,11 +35,11 @@
       height: 20px;
       background-color: #faf9ee;
       border: 1px solid #00000049;
-      cursor: pointer; /* ba neshangar mouse tagheer mikonad*/
+      /* cursor: pointer; ba neshangar mouse tagheer mikonad */
         }
 
 
-        .active {
+      .cell.active {
       background-color: #000000; 
     }
 
@@ -74,43 +74,76 @@
 
         <script>
             
-  const grid = document.getElementById("grid");
-  const cellSize = 20;
-  const cellGap = 1;
+  // const grid = document.getElementById("grid");
+  // const cellSize = 20;
+  // const cellGap = 1;
 
-  function createGrid() {
-    // پاک کردن سلول‌های قبلی
-    grid.innerHTML = "";
+  // function createGrid() {
+  //   // پاک کردن سلول‌های قبلی
+  //   grid.innerHTML = "";
 
-    // اندازه جدید صفحه
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+  //   // اندازه جدید صفحه
+  //   const screenWidth = window.innerWidth;
+  //   const screenHeight = window.innerHeight;
 
-    // محاسبه سطر و ستون
-    const cols = Math.floor(screenWidth / (cellSize + cellGap));
-    const rows = Math.floor(screenHeight / (cellSize + cellGap));
+  //   // محاسبه سطر و ستون
+  //   const cols = Math.floor(screenWidth / (cellSize + cellGap));
+  //   const rows = Math.floor(screenHeight / (cellSize + cellGap));
 
-    // تنظیم گرید با اندازه جدید
-    grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
-    grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
+  //   // تنظیم گرید با اندازه جدید
+  //   grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+  //   grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
 
-    // ساخت سلول‌ها
-    for (let i = 0; i < rows * cols; i++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
-      cell.addEventListener("click", () => {
-        cell.classList.toggle("active");
+  //   // ساخت سلول‌ها
+  //   for (let i = 0; i < rows * cols; i++) {
+  //     const cell = document.createElement("div");
+  //     cell.classList.add("cell");
+  //     cell.addEventListener("click", () => {
+  //       cell.classList.toggle("active");
+  //     });
+  //     grid.appendChild(cell);
+  //   }
+  // }
+
+  async function fetchAndRenderRule110(initial, rule, steps) {
+  const response = await fetch('/api/rule110/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      initial: "0000000000000001",  // مثلاً "0000000100000000"
+      rule: 110,
+      steps: 30
+    })
+  });
+
+  const data = await response.json();
+      const generations = data.generations;
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      const rows = generations.length;
+      const cols = generations[0].length;
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, 20px)`;
+      grid.style.gridTemplateRows = `repeat(${rows}, 20px)`;
+
+      generations.forEach(row => {
+        row.forEach(cell => {
+          const div = document.createElement('div');
+          div.classList.add('cell');
+          if (cell === 1) {
+            div.classList.add('active');
+          }
+          grid.appendChild(div);
+        });
       });
-      grid.appendChild(cell);
     }
-  }
 
-  // اجرای اولیه
-  createGrid();
+    window.onload = fetchAndRenderRule110;
 
-  // اجرای دوباره موقع resize
-  window.addEventListener("resize", createGrid);
-            
+
+
         </script>
 
     </body>

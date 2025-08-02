@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -35,16 +36,20 @@ def rule110_api(request):
         ruleset = decimal_to_binary_list(rule_number)
         result = generate_generations(initial, ruleset, steps)
         return JsonResponse({'generations': result})
-    return JsonResponse({'error': 'Only POST allowed'}, status=405)
+    # return JsonResponse({'error': 'Only POST allowed'}, status=405)
+# اگر GET بود، HTML رندر کن
+    return render(request, 'rule110.html')
+
+
 
 
 from django.shortcuts import render
 from django.http import HttpResponse
 
-@csrf_exempt
-# این تابع فقط HTML خام رو رندر می‌کنه
-def rule110_view(request):
-    return render(request, 'rule110.html')
+# @csrf_exempt
+# # این تابع فقط HTML خام رو رندر می‌کنه
+# def rule110_view(request):
+#     return render(request, 'rule110.html')
 
 
 # Create your views here.

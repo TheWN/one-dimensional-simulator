@@ -20,27 +20,31 @@
          
         }
 
-        .grid {
-            display: grid; /* دیو به صورت شبکه ای */
+        #grid {
+            display: grid; /* دیو به صورت شبکه ای*/
             justify-content: start;
             align-content: start;
             gap: 1px; /*distance between cell*/
+            max-width: 100%;
+            max-height:  100%;
             background-color: #dccfc0;
             flex-grow: 1; /*kesh miad*/
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: auto;
         }
 
-        .cell { /*each cell*/
-      width: 20px; 
-      height: 20px;
-      background-color: #faf9ee;
-      border: 1px solid #00000049;
-      /* cursor: pointer; ba neshangar mouse tagheer mikonad */
+      .cell { /*each cell*/
+         aspect-ratio: 1 / 1;
+         width: 100px; 
+         height: 100px;
+         background-color: #faf9ee;
+         border: 1px solid #00000049;
+         /* cursor: pointer; ba neshangar mouse tagheer mikonad */
         }
 
 
       .cell.active {
-      background-color: #000000; 
+        background-color: #000000; 
     }
 
     .sidebar {
@@ -52,6 +56,19 @@
 
     }
 
+    .container {
+
+      width: 100%;
+      max-height: 90vh; /*scroll vertical*/
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 10px;
+      border: 1px solid #dccfc0;
+      margin-top: 20px;
+      
+    }
+
+   
   
 
         h2   {color: #586053;}
@@ -60,16 +77,21 @@
     </style>
     <!-- css -->
     <body>
-        <div class="grid" id="grid"></div> 
+        <div id="container">
+          <div id="grid"></div>
+        </div> 
         <!-- تا در جی اس بهش دسترسی داشته باشیم 
          با هنصر div 
          در جاوا اسکریپت صد ها div میسازیم
          -->
+        
 
 
          <div class="sidebar">
           <h2 style="text-align:center;"> cellular automata simulator </h2>
         </div>
+
+
     
 
         <script>
@@ -105,6 +127,8 @@
   //   }
   // }
 
+
+// fetch function
   async function fetchAndRenderRule110(initial, rule, steps) {
   const response = await fetch('/api/rule110/', {
     method: 'POST',
@@ -112,22 +136,48 @@
     body: JSON.stringify({
       initial: "0000000000000001",  // مثلاً "0000000100000000"
       rule: 110,
-      steps: 30
+      steps: 1000
     })
   });
-
   const data = await response.json();
-      const generations = data.generations;
+  const generations = data.generations;
+
+
+  // grid and styles
 
       const grid = document.getElementById('grid');
-      grid.innerHTML = '';
+      grid.innerHTML = "";
+
+      const cellSize =20; 
+      const cellGap= 1;
+
+      
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      //give row and col from page
+      const maxCols = Math.floor(screenWidth / (cellSize + cellGap));
+      const maxRows = Math.floor(screenHeight / (cellSize + cellGap));
+
+ // این خط عرض grid رو دقیقا به اندازه تعداد ستون‌ها تنظیم می‌کنه
+       // 1 برای gap
 
       const rows = generations.length;
       const cols = generations[0].length;
 
-      grid.style.gridTemplateColumns = `repeat(${cols}, 20px)`;
-      grid.style.gridTemplateRows = `repeat(${rows}, 20px)`;
+// این خط عرض grid رو دقیقا به اندازه تعداد ستون‌ها تنظیم می‌کنه
+       // 1 برای gap
+      grid.style.width = `${cols * (cellSize + 1)}px`;
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+      grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
 
+     
+
+      // اگر خیلی زیاد بودن، اسکرول فعال باشه
+      grid.style.overflow = 'auto';
+
+
+
+   // condition
       generations.forEach(row => {
         row.forEach(cell => {
           const div = document.createElement('div');

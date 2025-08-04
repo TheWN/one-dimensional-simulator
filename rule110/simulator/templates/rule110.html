@@ -1,204 +1,43 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<html>
+  <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Rule 110 simulation</title>       
-        <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico">  -->
+      <meta charset="UTF-8" />
+      <title>Rule 110 simulation</title>
+      <link rel="stylesheet" href="{% static 'simulator/css/style.css' %}" />
+      <script src="{% static 'simulator/js/script.js' %}"></script>
+      <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico">  -->
     </head>
-    <!-- css -->
-    <style>
-        html, body{
-            
-            background-color: #FAF9EE;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: sans-serif;
-         
-        }
 
-        #grid {
-            display: grid; /* دیو به صورت شبکه ای*/
-            justify-content: start;
-            align-content: start;
-            gap: 1px; /*distance between cell*/
-            max-width: 100%;
-            max-height:  100%;
-            background-color: #dccfc0;
-            flex-grow: 1; /*kesh miad*/
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-      .cell { /*each cell*/
-         aspect-ratio: 1 / 1;
-         width: 100px; 
-         height: 100px;
-         background-color: #faf9ee;
-         border: 1px solid #00000049;
-         /* cursor: pointer; ba neshangar mouse tagheer mikonad */
-        }
-
-
-      .cell.active {
-        background-color: #000000; 
-    }
-
-    .sidebar {
-      width: 30%;
-      background-color: #A2AF9B;
-      padding: 20px;
-      border-left: 3px solid #a2af9b9f;
-
-
-    }
-
-    .container {
-
-      width: 100%;
-      max-height: 90vh; /*scroll vertical*/
-      overflow-y: auto;
-      overflow-x: auto;
-      padding: 10px;
-      border: 1px solid #dccfc0;
-      margin-top: 20px;
-      
-    }
-
-   
-  
-
-        h2   {color: #586053;}
-        p1    {color: #586053;}
-        
-    </style>
-    <!-- css -->
     <body>
-        <div id="container">
-          <div id="grid"></div>
-        </div> 
-        <!-- تا در جی اس بهش دسترسی داشته باشیم 
-         با هنصر div 
-         در جاوا اسکریپت صد ها div میسازیم
-         -->
-        
+      <div id="wrapper">
+        <div id="sidebar">
+          <h1>cellular automata simulator</h1>
+          <div id="controls">
+            <div>
+              <label
+                >Initial: <input type="text" id="initialInput" value="010"
+              /></label>
+            </div>
+            <div>
+              <label
+                >Rule: <input type="number" id="ruleInput" value="110"
+              /></label>
+            </div>
+            <div>
+              <label
+                >Steps: <input type="number" id="stepsInput" value="100"
+              /></label>
+            </div>
 
-
-         <div class="sidebar">
-          <h2 style="text-align:center;"> cellular automata simulator </h2>
+            <button onclick="fetchAndRenderRule110()">Run</button>
+          </div>
         </div>
 
-
-    
-
-        <script>
-            
-  // const grid = document.getElementById("grid");
-  // const cellSize = 20;
-  // const cellGap = 1;
-
-  // function createGrid() {
-  //   // پاک کردن سلول‌های قبلی
-  //   grid.innerHTML = "";
-
-  //   // اندازه جدید صفحه
-  //   const screenWidth = window.innerWidth;
-  //   const screenHeight = window.innerHeight;
-
-  //   // محاسبه سطر و ستون
-  //   const cols = Math.floor(screenWidth / (cellSize + cellGap));
-  //   const rows = Math.floor(screenHeight / (cellSize + cellGap));
-
-  //   // تنظیم گرید با اندازه جدید
-  //   grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
-  //   grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
-
-  //   // ساخت سلول‌ها
-  //   for (let i = 0; i < rows * cols; i++) {
-  //     const cell = document.createElement("div");
-  //     cell.classList.add("cell");
-  //     cell.addEventListener("click", () => {
-  //       cell.classList.toggle("active");
-  //     });
-  //     grid.appendChild(cell);
-  //   }
-  // }
-
-
-// fetch function
-  async function fetchAndRenderRule110(initial, rule, steps) {
-  const response = await fetch('/api/rule110/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      initial: "0000000000000001",  // مثلاً "0000000100000000"
-      rule: 110,
-      steps: 1000
-    })
-  });
-  const data = await response.json();
-  const generations = data.generations;
-
-
-  // grid and styles
-
-      const grid = document.getElementById('grid');
-      grid.innerHTML = "";
-
-      const cellSize =20; 
-      const cellGap= 1;
-
-      
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      //give row and col from page
-      const maxCols = Math.floor(screenWidth / (cellSize + cellGap));
-      const maxRows = Math.floor(screenHeight / (cellSize + cellGap));
-
- // این خط عرض grid رو دقیقا به اندازه تعداد ستون‌ها تنظیم می‌کنه
-       // 1 برای gap
-
-      const rows = generations.length;
-      const cols = generations[0].length;
-
-// این خط عرض grid رو دقیقا به اندازه تعداد ستون‌ها تنظیم می‌کنه
-       // 1 برای gap
-      grid.style.width = `${cols * (cellSize + 1)}px`;
-      grid.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
-      grid.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
-
-     
-
-      // اگر خیلی زیاد بودن، اسکرول فعال باشه
-      grid.style.overflow = 'auto';
-
-
-
-   // condition
-      generations.forEach(row => {
-        row.forEach(cell => {
-          const div = document.createElement('div');
-          div.classList.add('cell');
-          if (cell === 1) {
-            div.classList.add('active');
-          }
-          grid.appendChild(div);
-        });
-      });
-    }
-
-    window.onload = fetchAndRenderRule110;
-
-
-
-        </script>
-
+        <div id="grid"></div>
+      </div>
     </body>
+  </html>
 </html>
-
-
-
-

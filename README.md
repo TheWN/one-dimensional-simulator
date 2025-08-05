@@ -25,13 +25,3 @@ A fully interactive, open-source simulator for **Rule 110** – one of the most 
 | Visualization | HTML + CSS+ JS |
 | Versioning   | Git + GitHub (Open Source) |
 
----
-
-## 📸 Preview
-
-*(Optional: Add a screenshot or GIF of your app here later)*
-
----
-
-## ⚙️ Project Structure
-

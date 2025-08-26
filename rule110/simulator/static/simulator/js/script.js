@@ -1,6 +1,7 @@
 const cellSize = 20;
 const cellGap = 1;
 
+//centerlize pattern
 function centerPattern(pattern, totalCols) {
   const patternArr = pattern.trim().split("").map(Number);
   const result = Array(totalCols).fill(0);
@@ -11,6 +12,7 @@ function centerPattern(pattern, totalCols) {
   return result.join("");
 }
 
+//fetch
 async function fetchAndRenderRule110() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -18,11 +20,9 @@ async function fetchAndRenderRule110() {
   const gridWidth = grid.clientWidth;
   const gridHeight = grid.clientHeight;
 
-  const cols = Math.floor(gridWidth / (cellSize + cellGap)) * 5;
+  const cols = Math.floor(gridWidth / (cellSize + cellGap)) * 10;
   const rows = Math.floor(gridHeight / (cellSize + cellGap));
 
-  //   const inputPattern = "010"; // input
-  // گرفتن مقادیر از inputهای HTML
   const inputPattern = document.getElementById("initialInput").value.trim();
   const rule = parseInt(document.getElementById("ruleInput").value);
   const stepsInput = parseInt(document.getElementById("stepsInput").value);
@@ -62,8 +62,7 @@ async function fetchAndRenderRule110() {
   });
 }
 
-window.onload = fetchAndRenderRule110;
 window.onresize = () => {
   clearTimeout(window._resizeTimeout);
-  window._resizeTimeout = setTimeout(fetchAndRenderRule110, 200);
+  window._resizeTimeout = setTimeout(fetchAndRenderRule110, 5);
 };

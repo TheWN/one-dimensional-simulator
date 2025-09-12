@@ -19,9 +19,8 @@ A fully interactive, open-source simulator for **Rule 110** – one of the most 
 
 | Layer        | Technology    |
 |--------------|---------------|
-| Frontend     | Nuxt.js 3 (Vue 3 + Composition API) |
+| Frontend     | js & html css |
 | Backend      | FastAPI (Python 3) |
 | Communication | RESTful JSON API |
-| Visualization | HTML + CSS+ JS |
 | Versioning   | Git + GitHub (Open Source) |
 

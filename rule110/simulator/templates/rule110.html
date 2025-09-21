@@ -2,44 +2,70 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <html>
-    <head>
-      <meta charset="UTF-8" />
-      <title>Rule 110 simulation</title>
-      <link rel="stylesheet" href="{% static 'simulator/css/style.css' %}" />
-      <script src="{% static 'simulator/js/script.js' %}"></script>
-      <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico">  -->
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rule 110 simulation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
 
-    <body>
-      <div id="wrapper">
-        <div id="sidebar">
-          <h1 style="font-family: 'Times New Roman', Times, serif">
-            cellular automata simulator
-          </h1>
-          <div id="controls">
-            <div>
-              <label
-                >Initial: <input type="text" id="initialInput" value="010"
-              /></label>
-            </div>
-            <div>
-              <label
-                >Rule: <input type="number" id="ruleInput" value="110"
-              /></label>
-            </div>
-            <div>
-              <label
-                >Steps: <input type="number" id="stepsInput" value="100"
-              /></label>
-            </div>
+    <link rel="stylesheet" href="{% static 'simulator/css/style.css' %}" />
+    <script src="{% static 'simulator/js/script.js' %}"></script>
+    <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico">  -->
+  </head>
 
-            <button onclick="fetchAndRenderRule110()">Run</button>
+  <body>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <h1>Cellular Automata Simulator</h1>
+        <div id="controls">
+          <div class="control-group">
+            <label for="initialInput">Initial:</label>
+            <div class="input-wrapper">
+              <input type="text" id="initialInput" value="010" />
+              <span class="tooltip"
+                >ℹ️
+                <span class="tooltiptext">
+                  الگوی اولیه سلول‌ها: 0=خاموش، 1=روشن. مثلا: 010
+                </span>
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div id="grid"></div>
-      </div>
-    </body>
-  </html>
+          <div class="control-group">
+            <label for="ruleInput">Rule:</label>
+            <div class="input-wrapper">
+              <input type="number" id="ruleInput" value="110" />
+              <span class="tooltip"
+                >ℹ️
+                <span class="tooltiptext">
+                  قانون اتوماتا مانند 90، 30 یا 110
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="stepsInput">Steps:</label>
+            <div class="input-wrapper">
+              <input type="number" id="stepsInput" value="100" />
+              <span class="tooltip"
+                >ℹ️
+                <span class="tooltiptext">
+                  تعداد دفعات تکرار حداکثر تا عدد 100
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <button onclick="fetchAndRenderRule110()">Run</button>
+        </div>
+      </aside>
+
+      <!-- Grid -->
+      <div id="grid"></div>
+    </div>
+  </body>
 </html>

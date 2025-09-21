@@ -3,8 +3,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+
 def decimal_to_binary_list(n):
     return [int(x) for x in f"{n:08b}"]
+
 
 def generate_generations(initial, ruleset, steps):
     generations = []
@@ -23,24 +25,23 @@ def generate_generations(initial, ruleset, steps):
         current = nextgen
     return generations
 
-#این درسته
+
+# این درسته
 @csrf_exempt
 def rule110_api(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         data = json.loads(request.body)
-        initial_str = data.get('initial')
-        rule_number = int(data.get('rule', 110))
-        steps = int(data.get('steps', 20))
+        initial_str = data.get("initial")
+        rule_number = int(data.get("rule", 110))
+        steps = int(data.get("steps", 20))
 
         initial = [int(c) for c in initial_str.strip()]
         ruleset = decimal_to_binary_list(rule_number)
         result = generate_generations(initial, ruleset, steps)
-        return JsonResponse({'generations': result})
+        return JsonResponse({"generations": result})
     # return JsonResponse({'error': 'Only POST allowed'}, status=405)
-# اگر GET بود، HTML رندر کن
-    return render(request, 'rule110.html')
-
-
+    # اگر GET بود، HTML رندر کن
+    return render(request, "rule110.html")
 
 
 from django.shortcuts import render

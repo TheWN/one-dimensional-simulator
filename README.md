@@ -1,4 +1,4 @@
-# 🧬 Rule 110 Interactive Simulator
+# 🧬 Rule 110 Interactive Simulator cellular automata
 
 A fully interactive, open-source simulator for **Rule 110** – one of the most famous cellular automata, known for its computational universality (Turing completeness). This web-based simulator allows users to visualize and explore Rule 110 evolution **step-by-step**, built using **Nuxt.js** for the frontend and **FastAPI** (Python) for the backend.
 

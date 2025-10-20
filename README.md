@@ -24,3 +24,4 @@ A fully interactive, open-source simulator for **Rule 110** – one of the most 
 | Communication | RESTful JSON API |
 | Versioning   | Git + GitHub (Open Source) |
 
+
